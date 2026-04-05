@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruler.io | Dünyayı Yönet</title>
+    <title>Ruler.io | Hükümdar Paneli</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,20 +11,39 @@
     <div id="auth-container" class="overlay">
         <div class="auth-box">
             <h1>RULER<span class="dot-io">.io</span></h1>
-            <p>Hükümdar, isminizi tarihe yazın:</p>
-            <input type="text" id="username-input" maxlength="15" placeholder="Kullanıcı Adı...">
-            <button id="start-btn">SAVAŞA KATIL</button>
+            <input type="text" id="username-input" maxlength="15" placeholder="Hükümdar İsmi...">
+            <button onclick="handleLogin()">YOLCULUĞA BAŞLA</button>
         </div>
     </div>
 
     <div id="game-ui" class="hidden">
         <div class="top-bar">
-            <div class="user-info">👑 <span id="player-name-display"></span></div>
-            <div class="resources">💰 <span id="gold-count">100</span></div>
+            <div class="left-group">
+                <span id="display-name">👑 Yükleniyor...</span>
+                <button id="save-btn" onclick="saveToCloud()">💾 Save Progress</button>
+            </div>
+            <div class="right-group">
+                💰 Gold: <span id="gold-count">200</span>
+            </div>
         </div>
-        
-        <div id="map-container">
-            <div id="player-territory" class="territory">Ülkeniz Kuruluyor...</div>
+
+        <div id="main-menu" class="menu-view">
+            <button class="menu-btn orange">ORDU</button>
+            <button class="menu-btn green" onclick="switchMenu('investments-menu')">YATIRIMLAR</button>
+            <button class="menu-btn blue">ÜLKELER</button>
+        </div>
+
+        <div id="investments-menu" class="menu-view hidden">
+            <div class="menu-header">
+                <h2>Şehir Yatırımları</h2>
+                <button id="create-city-btn" onclick="createCity()">
+                    🏙️ Create a City (<span id="city-price">50</span> 💰)
+                </button>
+            </div>
+            
+            <div id="city-slots" class="slots-container">
+                </div>
+            <p class="esc-hint">[ESC] ile geri dön</p>
         </div>
     </div>
 
