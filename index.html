@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruler.io | Dünyayı Yönet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="auth-container" class="overlay">
+        <div class="auth-box">
+            <h1>RULER<span class="dot-io">.io</span></h1>
+            <p>Hükümdar, isminizi tarihe yazın:</p>
+            <input type="text" id="username-input" maxlength="15" placeholder="Kullanıcı Adı...">
+            <button id="start-btn">SAVAŞA KATIL</button>
+        </div>
+    </div>
+
+    <div id="game-ui" class="hidden">
+        <div class="top-bar">
+            <div class="user-info">👑 <span id="player-name-display"></span></div>
+            <div class="resources">💰 <span id="gold-count">100</span></div>
+        </div>
+        
+        <div id="map-container">
+            <div id="player-territory" class="territory">Ülkeniz Kuruluyor...</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
