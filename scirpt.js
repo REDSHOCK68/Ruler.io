@@ -1,20 +1,21 @@
-// OYUN VERİLERİ (DEĞİŞKENLER)
+// OYUN DEĞİŞKENLERİ
 let gameState = {
     playerName: "",
     gold: 200,
     cityPrice: 50,
-    cities: [] // Maksimum 5 adet nesne alacak
+    cities: [] // Maksimum 5 şehir saklar
 };
 
-const possibleCityNames = ["Konya", "İstanbul", "Ankara", "İzmir", "Bursa", "Antalya", "Sivas", "Trabzon"];
+const possibleCityNames = ["İstanbul", "Ankara", "İzmir", "Bursa", "Antalya", "Konya", "Sivas", "Trabzon"];
 
-// SAYFA YÜKLENDİĞİNDE
+// SAYFA YÜKLENDİĞİNDE KONTROLLER
 window.onload = () => {
     const localName = localStorage.getItem('ruler_name');
     const localData = localStorage.getItem('ruler_save_data');
 
     if (localName) {
         gameState.playerName = localName;
+        // Eğer daha önce kaydedilmiş bir oyun verisi varsa yükle
         if (localData) {
             gameState = JSON.parse(localData);
         }
@@ -22,7 +23,7 @@ window.onload = () => {
     }
 };
 
-// GİRİŞ YAPMA
+// GİRİŞ İŞLEMİ
 function handleLogin() {
     const input = document.getElementById('username-input').value.trim();
     if (input.length >= 2) {
@@ -30,11 +31,11 @@ function handleLogin() {
         localStorage.setItem('ruler_name', input);
         startGame();
     } else {
-        alert("Lütfen geçerli bir isim girin!");
+        alert("Hükümdar, isminiz en az 2 karakter olmalı!");
     }
 }
 
-// OYUNU BAŞLAT
+// OYUNU BAŞLAT VE EKRANI DEĞİŞTİR
 function startGame() {
     document.getElementById('auth-container').classList.add('hidden');
     document.getElementById('game-ui').classList.remove('hidden');
@@ -42,54 +43,60 @@ function startGame() {
     updateUI();
 }
 
-// ŞEHİR OLUŞTURMA (YATIRIM)
+// ŞEHİR SATIN ALMA (YATIRIM)
 function createCity() {
     if (gameState.cities.length >= 5) {
-        alert("Daha fazla vilayet kuramazsınız! (Maks 5 Slot)");
+        alert("Maksimum vilayet sayısına (5) ulaştınız!");
         return;
     }
 
     if (gameState.gold >= gameState.cityPrice) {
         gameState.gold -= gameState.cityPrice;
         
-        // Rastgele şehir ismi ve kazanç (10-40 arası)
+        // Rastgele isim ve kazanç değeri (+10 ile +40 arası)
+        const randomName = possibleCityNames[Math.floor(Math.random() * possibleCityNames.length)];
+        const randomIncome = Math.floor(Math.random() * 31) + 10;
+
         const newCity = {
-            name: possibleCityNames[Math.floor(Math.random() * possibleCityNames.length)],
-            income: Math.floor(Math.random() * 31) + 10
+            name: randomName,
+            income: randomIncome
         };
 
         gameState.cities.push(newCity);
-        gameState.cityPrice += 50; // Fiyat artışı
+        gameState.cityPrice += 50; // Her alımda fiyat 50 artar
         
         updateUI();
     } else {
-        alert("Yetersiz altın, Hükümdar!");
+        alert("Yetersiz altın!");
     }
 }
 
-// ARAYÜZÜ GÜNCELLE
+// ARAYÜZÜ VERİLERE GÖRE GÜNCELLE
 function updateUI() {
     document.getElementById('gold-count').innerText = gameState.gold;
     document.getElementById('city-price').innerText = gameState.cityPrice;
 
     const slotsDiv = document.getElementById('city-slots');
-    slotsDiv.innerHTML = ""; // Önce temizle
+    slotsDiv.innerHTML = ""; // İçeriği temizle
 
-    // 5 Slotu her zaman göster (Dolu veya Boş)
+    // Her zaman 5 slot göster
     for (let i = 0; i < 5; i++) {
         const city = gameState.cities[i];
+        
         if (city) {
+            // Dolu Slot
             slotsDiv.innerHTML += `
                 <div class="city-slot occupied">
                     <h3>${city.name}</h3>
-                    <p>Kazanç: +${city.income}/sn</p>
-                    <button class="invest-btn" onclick="alert('Hangi yatırımı yapmak istersiniz?')">Yatırım Yap</button>
+                    <p>Kazanç: +${city.income} 💰</p>
+                    <button class="invest-btn" onclick="alert('Yatırım seçenekleri yakında!')">Yatırım Yap</button>
                 </div>
             `;
         } else {
+            // Boş Slot
             slotsDiv.innerHTML += `
                 <div class="city-slot">
-                    <p style="color:#533483">Boş Slot</p>
+                    <p style="color:#533483">Boş Vilayet Slotu</p>
                 </div>
             `;
         }
@@ -102,16 +109,20 @@ function switchMenu(menuId) {
     document.getElementById(menuId).classList.remove('hidden');
 }
 
-// ESC TUŞU İLE GERİ DÖNME
+// ESC TUŞU DİNLEYİCİSİ
 document.addEventListener('keydown', (e) => {
     if (e.key === "Escape") {
-        document.getElementById('investments-menu').classList.add('hidden');
-        document.getElementById('main-menu').classList.remove('hidden');
+        // Eğer bir alt menüdeysek ana menüye dön
+        const invMenu = document.getElementById('investments-menu');
+        if (!invMenu.classList.contains('hidden')) {
+            invMenu.classList.add('hidden');
+            document.getElementById('main-menu').classList.remove('hidden');
+        }
     }
 });
 
-// BULUTA KAYDETME (LOCALSTORAGE)
+// YEREL KAYIT (SAVE PROGRESS)
 function saveToCloud() {
     localStorage.setItem('ruler_save_data', JSON.stringify(gameState));
-    alert("İlerlemeniz bu bilgisayar için kaydedildi!");
+    alert("İlerlemeniz başarıyla kaydedildi!");
 }
