@@ -26,11 +26,4 @@ Bu proje, bir .io oyununun gerektirdiği düşük gecikme ve hızlı yüklenme p
 1.  **Giriş:** Ana ekranda hükümdar isminizi belirleyin.
 2.  **Kayıt:** İsminiz yerel olarak kaydedilir ve oyun evrenine dahil olursunuz.
 3.  **Yönetim:** Kaynaklarınızı optimize edin ve sınırlarınızı genişletin.
-
-## 📂 Geliştirme Süreci
-
-```bash
-# Projeyi yerelinizde test etmek için
-git clone [https://github.com/GoldenGamesStudio/Ruler.io.git](https://github.com/GoldenGamesStudio/Ruler.io.git)
-cd Ruler.io
-# index.html dosyasını tarayıcıda açmanız yeterlidir.
+© 2026 Ruler.io - Tüm Hakları Saklıdır.
